@@ -11,4 +11,7 @@ xsub.bind(xsub_url)
 xpub = ctx.socket(zmq.XPUB)
 xpub.bind(xpub_url)
 
-zmq.proxy(xpub, xsub)
+try:
+    zmq.proxy(xpub, xsub) #zmq 3.X 
+except: 
+    zmq.device(zmq.FORWARDER, xpub, xsub) #xmq 2.X
