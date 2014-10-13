@@ -1,6 +1,6 @@
 {
-    "46012": "Half Moon Bay, CA",
-    "46026": "San Francisco, CA",
-    "46042": "Monterey, CA",
-    "46214": "Point Reyes, CA"
+    "46012": { "city": "Half Moon Bay", "state": "CA" },
+    "46026": { "city": "San Francisco", "state": "CA" },
+    "46042": { "city": "Monterey", "state": "CA" },
+    "46214": { "city": "Point Reyes", "state": "CA" }
 }

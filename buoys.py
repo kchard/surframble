@@ -42,6 +42,11 @@ class NdbcHtmlParser(HTMLParser):
                     self.surf_data['period'] = float(data.strip().split()[0])
                 elif self.curr_key == 'significant_wave_height':
                     self.surf_data['height'] = float(data.strip().split()[0])
+                elif self.curr_key == 'location':
+                    location = data.strip().split()
+                    self.surf_data['location'] = { 'latitude': location[0], 'longitude': location[1] } 
+                elif self.curr_key == "mean_wave_direction":
+                    self.surf_data['direction'] = int(data.split()[1].replace('(', ''))
                 self.found_val = True
 
 def html_from_rss(buoy_id):
@@ -69,7 +74,8 @@ buoys = load_buoys()
 for buoy_id in buoys:
     surf_data = surf_data_from_html(html_from_rss(buoy_id))
     surf_data['id'] = buoy_id
-    surf_data['name'] = buoys[buoy_id]
+    surf_data['location']['city'] = buoys[buoy_id]['city']
+    surf_data['location']['state'] = buoys[buoy_id]['state']
 
     logging.info("Sending data: %s" % surf_data)
     publisher.send_json(surf_data)
