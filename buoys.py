@@ -6,7 +6,7 @@ import zmq
 import logging
 
 def iso_date_str(date):
-    return time.strftime('%Y-%m-%dT%H:%M:%S', date)
+    return time.strftime('%Y-%m-%dT%H:%M:%S %Z', date)
 
 class NdbcHtmlParser(HTMLParser):
 
