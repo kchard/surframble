@@ -12,7 +12,7 @@ class NdbcHtmlParser(HTMLParser):
 
     def __init__(self):
         HTMLParser.__init__(self)
-        self.surf_data = {}
+        self.surf_data = {'stats': {}}
         self.in_strong = False
         self.found_val = False
         self.curr_key = None
@@ -30,7 +30,7 @@ class NdbcHtmlParser(HTMLParser):
         if self.in_strong:
             try:
                 date = time.strptime(data, '%B %d, %Y %I:%M %p %Z')
-                self.surf_data['time'] = iso_date_str(date)
+                self.surf_data['stats']['time'] = iso_date_str(date)
                 return
             except Exception as e: 
                 pass
@@ -39,26 +39,26 @@ class NdbcHtmlParser(HTMLParser):
         else:
             if not self.found_val:
                 if self.curr_key == 'dominant_wave_period':
-                    self.surf_data[self.curr_key] = float(data.strip().split()[0])
+                    self.surf_data['stats'][self.curr_key] = float(data.strip().split()[0])
                 elif self.curr_key == 'average_period':
-                    self.surf_data[self.curr_key] = float(data.strip().split()[0])
+                    self.surf_data['stats'][self.curr_key] = float(data.strip().split()[0])
                 elif self.curr_key == 'significant_wave_height':
-                    self.surf_data[self.curr_key] = float(data.strip().split()[0])
+                    self.surf_data['stats'][self.curr_key] = float(data.strip().split()[0])
                 elif self.curr_key == 'location':
                     location = data.strip().split()
                     self.surf_data[self.curr_key] = { 'latitude': location[0], 'longitude': location[1] } 
                 elif self.curr_key == "mean_wave_direction":
-                    self.surf_data[self.curr_key] = int(data.split()[1].replace('(', ''))
+                    self.surf_data['stats'][self.curr_key] = int(data.split()[1].replace('(', ''))
                 elif self.curr_key == "wind_direction":
-                    self.surf_data[self.curr_key] = int(data.split()[1].replace('(', ''))
+                    self.surf_data['stats'][self.curr_key] = int(data.split()[1].replace('(', ''))
                 elif self.curr_key == 'wind_speed':
-                    self.surf_data[self.curr_key] = float(data.strip().split()[0])
+                    self.surf_data['stats'][self.curr_key] = float(data.strip().split()[0])
                 elif self.curr_key == 'wind_gust':
-                    self.surf_data[self.curr_key] = float(data.strip().split()[0])
+                    self.surf_data['stats'][self.curr_key] = float(data.strip().split()[0])
                 elif self.curr_key == "air_temperature":
-                    self.surf_data[self.curr_key] = float(data)
+                    self.surf_data['stats'][self.curr_key] = float(data)
                 elif self.curr_key == "water_temperature":
-                    self.surf_data[self.curr_key] = float(data)
+                    self.surf_data['stats'][self.curr_key] = float(data)
                 self.found_val = True
 
 def html_from_rss(buoy_id):
@@ -86,8 +86,7 @@ buoys = load_buoys()
 for buoy_id in buoys:
     surf_data = surf_data_from_html(html_from_rss(buoy_id))
     surf_data['id'] = buoy_id
-    surf_data['location']['city'] = buoys[buoy_id]['city']
-    surf_data['location']['state'] = buoys[buoy_id]['state']
+    surf_data['name'] = buoys[buoy_id]
 
     logging.info("Sending data: %s" % surf_data)
     publisher.send_json(surf_data)
