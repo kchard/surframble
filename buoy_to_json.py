@@ -19,5 +19,5 @@ while True:
     logging.info("Recieved data: %s" % surf_data)
     buoy_file_name = "%s.json" % str(surf_data['id'])
     with open(os.path.join(buoy_data_folder, buoy_file_name), 'wb') as f:
-        json.dump(surf_data, f)
+        json.dump(surf_data, f, sort_keys=True, indent=4)
 
