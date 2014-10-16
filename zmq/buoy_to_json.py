@@ -5,7 +5,10 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
-buoy_data_folder = 'buoy'
+with open('buoy_to_json.json') as f:
+    config = json.load(f)
+
+buoy_data_folder = config['data_folder'] 
 if not os.path.exists(buoy_data_folder):
     os.makedirs(buoy_data_folder)
 

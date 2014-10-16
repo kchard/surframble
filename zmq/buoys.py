@@ -1,12 +1,9 @@
 import feedparser
 from HTMLParser import HTMLParser
-import time
 import json
+from dateutil.parser import parse
 import zmq
 import logging
-
-def iso_date_str(date):
-    return time.strftime('%Y-%m-%dT%H:%M:%S %Z', date)
 
 class NdbcHtmlParser(HTMLParser):
 
@@ -29,8 +26,8 @@ class NdbcHtmlParser(HTMLParser):
     def handle_data(self, data):
         if self.in_strong:
             try:
-                date = time.strptime(data, '%B %d, %Y %I:%M %p %Z')
-                self.surf_data['stats']['time'] = iso_date_str(date)
+                date = parse(data)
+                self.surf_data['stats']['time'] = date.isoformat() 
                 return
             except Exception as e: 
                 pass
