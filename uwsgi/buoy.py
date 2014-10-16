@@ -2,10 +2,12 @@ import os
 import json
 
 def application(env, start_response):
-    print env
+    with open('buoy.json') as f:
+        config = json.load(f)
+
     start_response('200 OK', [('Content-Type','application/json')])
 
-    buoy_dir = os.path.join(os.getcwd(), '../buoy')
+    buoy_dir = config['buoy_dir'] 
     buoy_collection = []
     for buoy_file_name in os.listdir(buoy_dir):
         with open(os.path.join(buoy_dir, buoy_file_name)) as f:
