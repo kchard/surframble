@@ -34,15 +34,18 @@ restart()
 
 case $1 in
     start)
-        start broker && start buoy_to_json && start buoy_to_mongo
+        start broker && start buoy_to_json && start buoy_to_mongo && start buoy_to_xml
         ;;
     stop)
-        stop broker ; stop buoy_to_json ; stop buoy_to_mongo
+        stop broker ; stop buoy_to_json ; stop buoy_to_mongo ; stop buoy_to_xml
+
         ;;
     restart)
-        restart broker && restart buoy_to_json && restart buoy_to_mongo
+        restart broker && restart buoy_to_json && restart buoy_to_mongo && restart buoy_to_xml
+
         ;;
     *)
-        restart broker && restart buoy_to_json && restart buoy_to_mongo
+        restart broker && restart buoy_to_json && restart buoy_to_mongo && restart buoy_to_xml
+
         ;;
 esac
