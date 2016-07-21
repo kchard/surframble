@@ -1,0 +1,32 @@
+version: '2'
+services:
+  broker:
+    build: ./broker
+    expose:
+     - "5556"
+     - "5557"
+    volumes:
+     - ./broker:/opt/app
+    command: python broker.py
+  buoy_to_json:
+    build: ./buoy_to_json
+    volumes:
+     - .:/opt/app
+     - ./www/api/buoy/:/buoy
+    depends_on:
+     - broker 
+    command: python buoy_to_json.py
+  buoys:
+    build: ./buoys
+    volumes:
+     - .:/opt/app
+    depends_on:
+     - broker 
+     - buoy_to_json
+    command: python buoys.py
+  nginx:
+    image: nginx
+    ports: 
+     - "8080:80"
+    volumes:
+     - ./www:/usr/share/nginx/html:ro
