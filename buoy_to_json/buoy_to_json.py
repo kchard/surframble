@@ -5,18 +5,14 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
-with open('buoy_to_json.json') as f:
-    config = json.load(f)
-
-buoy_data_folder = config['data_folder'] 
-if not os.path.exists(buoy_data_folder):
-    os.makedirs(buoy_data_folder)
+buoy_data_folder = os.environ['BUOY_DATA_DIR']
 
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ('tcp://localhost:5557')
+socket.connect ('tcp://broker:5557')
 socket.setsockopt(zmq.SUBSCRIBE, '')
 
+logging.info("Waiting for data")
 while True:
     surf_data = socket.recv_json()
     logging.info("Recieved data: %s" % surf_data)

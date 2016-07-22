@@ -77,7 +77,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 context = zmq.Context()
 publisher = context.socket(zmq.PUB)
-publisher.connect('tcp://localhost:5556')
+publisher.connect('tcp://broker:5556')
 
 buoys = load_buoys()
 for buoy_id in buoys:

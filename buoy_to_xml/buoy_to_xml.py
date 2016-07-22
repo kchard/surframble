@@ -19,17 +19,11 @@ def dict_to_xml(d, root):
 
     return root
 
-
-with open('buoy_to_xml.json') as f:
-    config = json.load(f)
-
-buoy_data_folder = config['data_folder'] 
-if not os.path.exists(buoy_data_folder):
-    os.makedirs(buoy_data_folder)
+buoy_data_folder = os.environ['BUOY_DATA_DIR']
 
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ('tcp://localhost:5557')
+socket.connect ('tcp://broker:5557')
 socket.setsockopt(zmq.SUBSCRIBE, '')
 
 while True:
@@ -39,5 +33,3 @@ while True:
     with open(os.path.join(buoy_data_folder, buoy_file_name), 'wb') as f:
         xml = dict_to_xml(surf_data, ET.Element('buoy'))
         f.write(ET.tostring(xml))
-        
-
