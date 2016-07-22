@@ -16,6 +16,14 @@ services:
     depends_on:
      - broker 
     command: python buoy_to_json.py
+  buoy_to_xml:
+    build: ./buoy_to_xml
+    volumes:
+     - .:/opt/app
+     - ./www/api/buoy/:/buoy
+    depends_on:
+     - broker
+    command: python buoy_to_xml.py
   buoys:
     build: ./buoys
     volumes:
