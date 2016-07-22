@@ -1,1 +1,1 @@
-0 * * * * cd /opt/apps/surframble && /usr/local/bin/docker-compose up -d > log.txt 2>&1
+0 * * * * cd /opt/apps/surframble && /usr/local/bin/docker-compose up -d > compose.log 2>&1
