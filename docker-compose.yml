@@ -12,18 +12,30 @@ services:
     build: ./buoy_to_json
     volumes:
      - .:/opt/app
-     - ./www/api/buoy/:/buoy
+     - ./www/api/:/resources
     depends_on:
      - broker 
     command: python buoy_to_json.py
+  buoy_to_json_index:
+    build: ./buoy_to_json
+    volumes:
+     - .:/opt/app
+     - ./www/api/:/resources
+    command: python generate_index_json.py
   buoy_to_xml:
     build: ./buoy_to_xml
     volumes:
      - .:/opt/app
-     - ./www/api/buoy/:/buoy
+     - ./www/api/:/resources
     depends_on:
      - broker
     command: python buoy_to_xml.py
+  buoy_to_xml_index:
+    build: ./buoy_to_xml
+    volumes:
+     - .:/opt/app
+     - ./www/api/:/resources
+    command: python generate_index_xml.py
   buoys:
     build: ./buoys
     volumes:

@@ -5,7 +5,7 @@ import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
-buoy_data_folder = os.environ['BUOY_DATA_DIR']
+buoy_data_folder = os.path.join(os.environ['RESOURCE_DIR'], 'buoy')
 
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
